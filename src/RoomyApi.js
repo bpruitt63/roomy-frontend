@@ -26,8 +26,13 @@ class RoomyApi {
         };
     };
 
+    static async login(data) {
+        const res = await this.request('users/login', 'post', data);
+        return res.token;
+    };
+
 };
 
-RoomyApi.token = localStorage.getItem('token');
+RoomyApi.token = localStorage.getItem('roomyToken');
 
 export default RoomyApi;
