@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link, Navigate} from 'react-router-dom';
 import {useHandleChange, useErrors, useValidate} from './hooks';
 import RoomyApi from './RoomyApi';
 import Errors from './Errors';
 
-function Login({handleLogin}) {
+function Login({user, handleToken}) {
 
     const initialState = {email: '', pwd: ''};
     const [data, handleChange, setData] = useHandleChange(initialState);
@@ -13,12 +13,14 @@ function Login({handleLogin}) {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
+    if (user) return (<Navigate to='/' />);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setApiErrors({});
 
-        const err = validate(data, {email: 'Email', pwd: 'Password'});
-        if (Object.keys(err).length) {
+        const errors = validate(data, {email: 'Email', pwd: 'Password'});
+        if (Object.keys(errors).length) {
             setData({email: data.email, pwd: ''});
             return false;
         };
@@ -27,7 +29,7 @@ function Login({handleLogin}) {
 
         try {
             const token = await RoomyApi.login(data);
-            handleLogin(token);
+            handleToken(token);
             navigate('/');
         } catch (err) {
             getApiErrors(err);
@@ -44,6 +46,7 @@ function Login({handleLogin}) {
 
     return (
         <div>
+            <Link to='/register'>Register Here</Link>
             <Errors formErrors={formErrors}
                     apiErrors={apiErrors} />
             <form onSubmit={handleSubmit}>

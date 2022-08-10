@@ -6,10 +6,6 @@ class RoomyApi {
 
     static token;
 
-    static setToken(newToken) {
-        this.token = newToken;
-    };
-
     static async request(endpoint, method='get', data={}) {
         const url = `${BASE_URL}/${endpoint}`;
         const headers = {Authorization: `Bearer ${RoomyApi.token}`};
@@ -28,6 +24,11 @@ class RoomyApi {
 
     static async login(data) {
         const res = await this.request('users/login', 'post', data);
+        return res.token;
+    };
+
+    static async register(data) {
+        const res = await this.request('users/register', 'post', data);
         return res.token;
     };
 

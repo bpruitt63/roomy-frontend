@@ -10,7 +10,7 @@ function App() {
 	const [user, setUser] = useState(localStorage.roomyToken &&
 							jwt_decode(localStorage.getItem("roomyToken")).user);
 
-	const handleLogin = (token) => {
+	const handleToken = (token) => {
 		localStorage.setItem("roomyToken", token);
 		setUser(jwt_decode(token).user);
 		RoomyApi.token = token;
@@ -18,8 +18,11 @@ function App() {
 
 	return (
 		<div className="App">
-			<NavB />
-			<AppRoutes handleLogin={handleLogin} />
+			<NavB user={user}
+					setUser={setUser} />
+			<AppRoutes user={user}
+						handleToken={handleToken}
+						setUser={setUser} />
 		</div>
 	);
 };

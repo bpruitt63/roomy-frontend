@@ -1,13 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-function NavB() {
+function NavB({user}) {
 
     return (
         <div>
             <p>
                 <Link to='/'>Roomy</Link>
-                <Link to='/login'>Login Stuff</Link>
+                {!user && 
+                    <Link to='/login'>Login/Register</Link>}
+                {user &&
+                    <span>{user.firstName}{' '}{user.lastName}</span>}
+                {user && <Link to='/logout'>Logout</Link>}
                 <span>Admin</span>
             </p>
         </div>
